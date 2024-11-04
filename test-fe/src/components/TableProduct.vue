@@ -8,30 +8,58 @@
         <th scope="col">Subcategory</th>
         <th scope="col">Price</th>
         <th scope="col">Status</th>
-        <th scope="col" colspan="2">Function</th>
+        <th scope="col" colspan="3">Function</th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="product in products" :key="product.id">
-        <td>Mark</td>
+      <tr v-for="(product, index) in products" :key="product.id">
+        <td>{{index + 1}}</td>
         <td>{{product.productName}}</td>
         <td>{{product.brandName[0]}}</td>
         <td>{{product.subCategory}}</td>
         <td>{{product.originPrice}}</td>
         <td>{{product.status}}</td>
         <td>
-          <a href="#" class="btn btn-success">Detail</a>
-          <a href="#" class="btn btn-warning">Update</a>
+          <button class="btn btn-success" @click="showDetail">Detail</button>
+          <button class="btn btn-warning" @click.prevent="showUpdate = true">Update</button>
+          <button class="btn btn-danger" @click="deleteProduct">Delete</button>
         </td>
       </tr>
     </tbody>
   </table>
+  <modal-update
+          :show-modal="showUpdate"
+          @isVisible="showUpdate = $event">
+  </modal-update>
 </template>
 
 <script>
 import ProductService from '@/service/ProductService';
+import ModalUpdate from './modal/ModalUpdate.vue';
 
   export default {
+    components: {ModalUpdate},
+
+    data() {
+      return {
+        showUpdate: false
+      }
+    },
+
+    inject: [ "listStatuses"],
+
+    computed: {
+      brands() {
+        return this.listBrands();
+      },
+      subCates() {
+        return this.listSubCates();
+      },
+      statuses() {
+        return this.listStatuses();
+      }
+    },
+
     name: 'Product',
     data() {
       return {
