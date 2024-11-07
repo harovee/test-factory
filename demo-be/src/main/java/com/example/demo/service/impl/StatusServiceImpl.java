@@ -2,6 +2,7 @@ package com.example.demo.service.impl;
 
 import com.example.demo.entity.Status;
 import com.example.demo.model.response.StatusResponse;
+import com.example.demo.model.response.impl.CommonStatusReponse;
 import com.example.demo.repository.StatusRepository;
 import com.example.demo.service.StatusService;
 import lombok.RequiredArgsConstructor;
@@ -23,22 +24,11 @@ public class StatusServiceImpl implements StatusService {
         if (listStatus.isEmpty()) {
             return new ResponseEntity<>("Danh sach rong", HttpStatus.BAD_REQUEST);
         }
-        List<StatusResponse> statusResponseList = new ArrayList<>();
+        List<CommonStatusReponse> statusResponseList = new ArrayList<>();
         for (Status status : listStatus) {
-            StatusResponse statusResponse = new StatusResponse() {
-                @Override
-                public Long getId() {
-                    return status.getId();
-                }
-
-                @Override
-                public String getStatusName() {
-                    return status.getStatusName();
-                }
-            };
+            CommonStatusReponse statusResponse = new CommonStatusReponse(status);
             statusResponseList.add(statusResponse);
         }
-
         return new ResponseEntity<>(statusRepository.findAll(), HttpStatus.OK);
     }
 }

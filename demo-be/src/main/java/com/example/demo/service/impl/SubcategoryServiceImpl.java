@@ -2,6 +2,8 @@ package com.example.demo.service.impl;
 
 import com.example.demo.entity.SubCategory;
 import com.example.demo.model.response.SubcategoryResponse;
+import com.example.demo.model.response.impl.CommonBrandResponse;
+import com.example.demo.model.response.impl.CommonSubCateResponse;
 import com.example.demo.repository.SubCateRepository;
 import com.example.demo.service.SubCategoryService;
 import lombok.RequiredArgsConstructor;
@@ -23,20 +25,9 @@ public class SubcategoryServiceImpl implements SubCategoryService {
         if (listSubcate.isEmpty()) {
             return new ResponseEntity<>("Danh sach rong", HttpStatus.BAD_REQUEST);
         }
-        List<SubcategoryResponse> subCateResponseList = new ArrayList<>();
+        List<CommonSubCateResponse> subCateResponseList = new ArrayList<>();
         for (SubCategory sc : listSubcate) {
-            SubcategoryResponse scResponse = new SubcategoryResponse() {
-                @Override
-                public Long getId() {
-                    return sc.getId();
-                }
-
-                @Override
-                public String getSubCateName() {
-                    return sc.getSubCateName();
-                }
-
-            };
+            CommonSubCateResponse scResponse = new CommonSubCateResponse(sc);
             subCateResponseList.add(scResponse);
         }
 

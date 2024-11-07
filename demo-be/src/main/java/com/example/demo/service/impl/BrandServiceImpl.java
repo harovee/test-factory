@@ -5,6 +5,7 @@ import com.example.demo.entity.Product;
 import com.example.demo.entity.ProductBrand;
 import com.example.demo.model.response.BrandResponse;
 import com.example.demo.model.response.ProductResponse;
+import com.example.demo.model.response.impl.CommonBrandResponse;
 import com.example.demo.repository.BrandRepository;
 import com.example.demo.service.BrandService;
 import com.example.demo.service.ProductService;
@@ -30,19 +31,9 @@ public class BrandServiceImpl implements BrandService {
         if (listBrand.isEmpty()) {
             return new ResponseEntity<>("Danh sach rong", HttpStatus.BAD_REQUEST);
         }
-        List<BrandResponse> brandResponseList = new ArrayList<>();
+        List<CommonBrandResponse> brandResponseList = new ArrayList<>();
         for (Brand brand : listBrand) {
-            BrandResponse brandResponse = new BrandResponse() {
-                @Override
-                public Long getId() {
-                    return brand.getId();
-                }
-
-                @Override
-                public String getBrandName() {
-                    return brand.getBrandName();
-                }
-            };
+            CommonBrandResponse brandResponse = new CommonBrandResponse(brand);
             brandResponseList.add(brandResponse);
         }
 

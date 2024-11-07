@@ -8,7 +8,7 @@
                             <h5 class="modal-title" id="exampleModalLabel">Add Product</h5>
                         </div>
                         <div class="modal-body">
-                            <form action="#">
+                            <form @submit.prevent="addProduct">
                                 <div class="form-group mb-2">
                                     <label for="name">Name</label>
                                     <input type="text" class="form-control" id="name" v-model="product.productName">
@@ -40,7 +40,7 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-success" @click="AddProduct">Save changes</button>
+                            <button type="button" class="btn btn-success" @click="addProduct">Save changes</button>
                             <button type="button" class="btn btn-secondary" @click.prevent="modalClose">Close</button>
                         </div>
                     </div>
@@ -57,7 +57,7 @@
         }
     },
     
-    inject: ["listBrands", "listSubCates"],
+    inject: ["listBrands", "listSubCates", "listProduct"],
 
     computed: { //sau khi tiêm list, load lại nếu có thay đổi
         brands() { 

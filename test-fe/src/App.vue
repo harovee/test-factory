@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import axios from "axios";
+
 import Search from "./components/Search.vue";
 import TableProduct from "./components/TableProduct.vue";
 import BrandService from "./service/BrandService";
@@ -17,21 +17,23 @@ export default {
   components: { Search, TableProduct },
   data() {
     return {
+      listProduct: [],
       listBrand: [],
       listSubCate: [],
-      listStatus: [],
+      listStatus: []
     };
   },
 
    mounted() {
      this.getBrands();
-    // console.log(this.listBrand);
      this.getSubCategories();
+     this.getStatusList();
   },
 
   provide() {
     //truyen gia tri cua cha sang lop con
     return {
+      listProduct: () => this.listProduct,
       listBrands: () => this.listBrand,
       listSubCates: () => this.listSubCate,
       listStatuses: () => this.listStatus
@@ -43,24 +45,16 @@ export default {
       BrandService.getBrands().then((response) => {
         this.listBrand = response.data;
         // console.log(this.listBrand);
-
       }).catch(error => {
         console.error("Error fetching brands:", error);
       });
     },
-    // async getBrands() {
-    //   try {
-    //     const response = await axios.get(`http://localhost:8386/brand`);
-    //     this.listBrand = response.data;
-    //   } catch (error) {
-    //     console.error("Error fetching brands:", error);
-    //   }
-    // },
 
     getSubCategories() {
       SubcategoryService.getSubCategories()
         .then((response) => {
           this.listSubCate = response.data;
+          // console.log(response.data); 
         })
         .catch((error) => {
           console.error("Error fetching subcategories:", error);
@@ -75,7 +69,7 @@ export default {
       .catch((error) => {
         console.error("Error fetching status list: ", error);
       })
-    }
+    },
   },
 };
 </script>

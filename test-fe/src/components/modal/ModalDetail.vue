@@ -1,11 +1,10 @@
 <template>
-    <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" :class="{ show: showModal }"
                 :style="{ display: showModal ? 'block' : 'none' }">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Update Product</h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Detail Product</h5>
                         </div>
                         <div class="modal-body">
                             <form action="#">
@@ -46,53 +45,48 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-success" @click="UpdateProduct">Save changes</button>
                             <button type="button" class="btn btn-secondary" @click.prevent="modalClose">Close</button>
                         </div>
                     </div>
                 </div>
             </div>
 </template>
+
 <script>
+    export default {
+        props: {
+            showModal: {
+                type: Boolean,
+                required: true,
+            },
 
- export default {
-    props: { //tạo thuộc tính
-        showModal: {
-            type: Boolean,
-            required: true
-        },
-
-        product: {
+            product: {
                 required: true,
                 type: Object
             }
-    },
-    
-    inject: ["listBrands", "listSubCates", "listStatuses"],
-
-    computed: { //sau khi tiêm list, load lại nếu có thay đổi
-        brands() {
-            return this.listBrands()
         },
-        subCates() {
-            return this.listSubCates()
+
+        inject: ["listBrands", "listSubCates", "listStatuses"],
+
+        computed: {
+            brands() {
+                return this.listBrands()
+            },
+            subCates() {
+                return this.listSubCates()
+            },
+            statuses() {
+                return this.listStatuses()
+            }
         },
-        statuses() {
-            return this.listStatuses()
-        }
-    },
 
-    mounted() {
-        // console.log(this.listBrands());
-        // console.log(this.listSubCates());
-        // console.log(this.listStatuses());
-        this.listBrands();
-        this.listSubCates();
-        this.listStatuses();
-        
-    },
+        mounted() {
+            this.listBrands();
+            this.listSubCates();
+            this.listStatuses();
+        },
 
-    data() {
+        data() {
         return {
             product: { // đúng convention của request be
                 productName:"",
@@ -107,12 +101,14 @@
         }
     },
 
+    
+
     methods: {
         modalClose(){
             this.$emit("isVisible", false);
         }
     },
     
- }
+    }
 
 </script>

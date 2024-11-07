@@ -6,8 +6,8 @@ import com.example.demo.entity.ProductBrand;
 import com.example.demo.entity.Status;
 import com.example.demo.entity.SubCategory;
 import com.example.demo.model.request.AddProductRequest;
-import com.example.demo.model.request.ProductRequest;
 import com.example.demo.model.request.UpdateProductRequest;
+import com.example.demo.model.response.ProductFormResponse;
 import com.example.demo.model.response.ProductResponse;
 import com.example.demo.repository.BrandRepository;
 import com.example.demo.repository.ProductRepository;
@@ -21,10 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -155,5 +152,70 @@ public class ProductServiceImpl implements ProductService {
             return new ResponseEntity<>("Deleted"+id, HttpStatus.OK);
         }
         return new ResponseEntity<>("Product not found", HttpStatus.BAD_REQUEST);
+    }
+
+    @Override
+    public ResponseEntity<?> getProductById(Long id) {
+        Optional<Product> productOptional = productRepository.findById(id);
+        if (productOptional.isPresent()) {
+            Product product = productOptional.get();
+            return new ResponseEntity<>(convertToProductFormResponse(product) ,HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Product not found", HttpStatus.BAD_REQUEST);
+    }
+
+    private ProductFormResponse convertToProductFormResponse(Product product) {
+        Long brandId = (product.getListProductBrand() != null && !product.getListProductBrand().isEmpty())
+                ? product.getListProductBrand().get(0).getId()
+                : null;
+        Long subCategoryId = (product.getSubCategory() != null) ? product.getSubCategory().getId() : null;
+        Long statusId = (product.getStatus() != null) ? product.getStatus().getId() : null;
+
+        return new ProductFormResponse() {
+            @Override
+            public Long getId() {
+                return product.getId();
+            }
+
+            @Override
+            public String getProductName() {
+                return product.getProductName();
+            }
+
+            @Override
+            public String getColor() {
+                return product.getColor();
+            }
+
+            @Override
+            public Long getQuantity() {
+                return product.getQuantity();
+            }
+
+            @Override
+            public Float getSellPrice() {
+                return product.getSellPrice();
+            }
+
+            @Override
+            public Float getOriginPrice() {
+                return product.getOriginPrice();
+            }
+
+            @Override
+            public Long getBrandId() {
+                return brandId;
+            }
+
+            @Override
+            public Long getSubCategoryId() {
+                return subCategoryId;
+            }
+
+            @Override
+            public Long getStatusId() {
+                return statusId;
+            }
+        };
     }
 }

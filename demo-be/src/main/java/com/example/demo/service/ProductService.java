@@ -15,4 +15,6 @@ public interface ProductService {
     ResponseEntity<?> updateProduct(Long id, UpdateProductRequest request);
 
     ResponseEntity<?> deleteProduct(Long id);
+
+    ResponseEntity<?> getProductById(Long id);
 }

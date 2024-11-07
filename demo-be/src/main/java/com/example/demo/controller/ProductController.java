@@ -50,4 +50,9 @@ public class ProductController {
     public ResponseEntity<?> deleteProduct(@PathVariable("id") Long id){
         return productService.deleteProduct(id);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getProductById(@PathVariable("id") Long id) {
+        return productService.getProductById(id);
+    }
 }
